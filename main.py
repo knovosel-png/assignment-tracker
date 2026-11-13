@@ -391,7 +391,7 @@ assert_equal(matches_filters(test_state, test_state.assignments[1]), False)
 set_website_title("College Assignment Tracker")
 
 set_site_information(
-    "Student Developer",
+    "Kira Novosel",
     "A website for organizing college assignments and tracking progress.",
     "Drafter documentation and AI assistance",
     "See the planning document in the GitHub repository.",
