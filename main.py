@@ -23,7 +23,17 @@ class State:
     completed_count: int  # Number of finished assignments
 
 def navigation() -> list:
-    """Creates buttons to navigate between the five main pages."""
+    """Creates buttons for the five main pages.
+    
+    Parameters:
+        None.
+    
+    Returns:
+        A list of navigation buttons.
+    
+    Example:
+        navigation() creates buttons for Home, Add Assignment, View Assignments, Progress Summary, and Settings.
+    """
     return [
         Button("Home", "index"),
         Button("Add Assignment", "add_assignment"),
@@ -34,7 +44,17 @@ def navigation() -> list:
 
 
 def count_completed(assignments: list[Assignment]) -> int:
-    """Goes through the assignments and counts how many are completed."""
+    """Counts how many assignments are finished.
+    
+    Parameters:
+        assignments: A list of Assignment objects.
+    
+    Returns:
+        The number of completed assignments as an integer.
+    
+    Example:
+        count_completed(make_test_state().assignments) returns 1.
+    """
     # Start at zero and add one for each finished assignment.
     total = 0
 
@@ -46,7 +66,18 @@ def count_completed(assignments: list[Assignment]) -> int:
 
 
 def matches_filters(state: State, assignment: Assignment) -> bool:
-    """Checks if an assignment matches the class and priority filters."""
+    """Checks if an assignment matches both selected filters.
+    
+    Parameters:
+        state: Stores the selected filters.
+        assignment: The assignment being checked.
+    
+    Returns:
+        True if the assignment matches both filters, otherwise False.
+    
+    Example:
+        matches_filters(make_test_state(), make_test_state().assignments[0]) returns True.
+    """
     # Both filters have to match before an assignment is shown.
     class_matches = False
     priority_matches = False
@@ -65,7 +96,17 @@ def matches_filters(state: State, assignment: Assignment) -> bool:
 
 
 def get_classes(state: State) -> list[str]:
-    """Makes a list of all the classes without repeating any."""
+    """Makes a list of class names without duplicates.
+    
+    Parameters:
+        state: Stores the assignments.
+    
+    Returns:
+        A list of class names starting with "All".
+    
+    Example:
+        get_classes(make_test_state()) returns ["All", "Math", "English"].
+    """
     # "All" lets the student see assignments from every class.
     classes = ["All"]
 
@@ -77,7 +118,17 @@ def get_classes(state: State) -> list[str]:
 
 
 def get_percentage(state: State) -> float:
-    """Calculates the percentage of assignments that are completed."""
+    """Calculates the percentage of finished assignments.
+    
+    Parameters:
+        state: Stores assignments and the completed count.
+    
+    Returns:
+        The percentage completed, rounded to one decimal place.
+    
+    Example:
+        get_percentage(make_test_state()) returns 50.0.
+    """
     total = len(state.assignments)
 
     # Avoid dividing by zero when there are no assignments yet.
@@ -89,7 +140,17 @@ def get_percentage(state: State) -> float:
 
 @route
 def index(state: State) -> Page:
-    """Displays the home page with buttons to the other pages."""
+    """Displays the home page and its navigation buttons.
+    
+    Parameters:
+        state: Stores the current website information.
+    
+    Returns:
+        A Page showing the home screen.
+    
+    Example:
+        index(make_test_state()) creates the home page with the title "College Assignment Tracker".
+    """
     return Page(state, [
         Header("College Assignment Tracker"),
         "Welcome to your assignment tracker!",
@@ -101,7 +162,17 @@ def index(state: State) -> Page:
 
 @route
 def add_assignment(state: State) -> Page:
-    """Shows the form where users can enter a new assignment."""
+    """Displays the form for adding an assignment.
+    
+    Parameters:
+        state: Stores the current website information.
+    
+    Returns:
+        A Page with text boxes and a priority selection.
+    
+    Example:
+        add_assignment(make_test_state()) creates a page with an assignment name text box.
+    """
     return Page(state, [
         Header("Add a New Assignment"),
         "Assignment Name:",
@@ -121,7 +192,21 @@ def add_assignment(state: State) -> Page:
 @route
 def save_assignment(state: State, name: str, class_name: str,
                     due_date: str, priority: str) -> Page:
-    """Checks the entered information and adds the assignment to the list."""
+    """Checks the form and saves a new unfinished assignment.
+    
+    Parameters:
+        state: Stores the assignments.
+        name: The assignment name.
+        class_name: The class for the assignment.
+        due_date: The date entered for the assignment.
+        priority: The selected priority level.
+    
+    Returns:
+        A Page confirming the assignment was saved, or showing missing information.
+    
+    Example:
+        save_assignment(state, "Quiz", "Math", "2026-12-10", "High") adds a new Quiz assignment when state is valid.
+    """
     # strip() removes extra spaces so a blank name does not count.
     if name.strip() == "" or class_name.strip() == "":
         return Page(state, [
@@ -158,7 +243,17 @@ def save_assignment(state: State, name: str, class_name: str,
 
 @route
 def view_assignments(state: State) -> Page:
-    """Shows assignments that match the selected filters."""
+    """Displays assignments that match the chosen filters.
+    
+    Parameters:
+        state: Stores assignments and the current filters.
+    
+    Returns:
+        A Page listing matching assignments with their information and buttons.
+    
+    Example:
+        view_assignments(make_test_state()) creates a page showing Homework 1 and Essay.
+    """
     content = [
         Header("Your Assignments"),
         "Class Filter: " + state.selected_class,
@@ -216,7 +311,18 @@ def view_assignments(state: State) -> Page:
 
 @route
 def complete_assignment(state: State, assignment_index: int) -> Page:
-    """Marks an assignment complete and updates the completed count."""
+    """Marks an assignment as finished and updates the count.
+    
+    Parameters:
+        state: Stores assignments and the completed count.
+        assignment_index: The position of the assignment in the list.
+    
+    Returns:
+        A Page showing the updated assignment list.
+    
+    Example:
+        complete_assignment(state, 0) marks the first assignment complete if it exists.
+    """
     if 0 <= assignment_index < len(state.assignments):
         assignment = state.assignments[assignment_index]
 
@@ -230,7 +336,18 @@ def complete_assignment(state: State, assignment_index: int) -> Page:
 
 @route
 def delete_assignment(state: State, assignment_index: int) -> Page:
-    """Removes an assignment and updates the completed count if needed."""
+    """Deletes an assignment and adjusts the completed count if needed.
+    
+    Parameters:
+        state: Stores assignments and the completed count.
+        assignment_index: The position of the assignment to delete.
+    
+    Returns:
+        A Page showing the updated assignment list.
+    
+    Example:
+        delete_assignment(state, 0) removes the first assignment if it exists.
+    """
     if 0 <= assignment_index < len(state.assignments):
         assignment = state.assignments[assignment_index]
 
@@ -245,7 +362,17 @@ def delete_assignment(state: State, assignment_index: int) -> Page:
 
 @route
 def summary(state: State) -> Page:
-    """Shows how many assignments are completed and how many are left."""
+    """Shows totals and the percentage of completed assignments.
+    
+    Parameters:
+        state: Stores assignments and the completed count.
+    
+    Returns:
+        A Page showing the progress summary.
+    
+    Example:
+        summary(make_test_state()) creates a page showing 2 total assignments and 50.0% completed.
+    """
     total = len(state.assignments)
     completed = state.completed_count
     # Unfinished assignments are everything not marked complete.
@@ -264,7 +391,17 @@ def summary(state: State) -> Page:
 
 @route
 def settings(state: State) -> Page:
-    """Shows the settings page where users can choose filters."""
+    """Displays the class and priority filter choices.
+    
+    Parameters:
+        state: Stores assignments and selected filters.
+    
+    Returns:
+        A Page where the user can choose filters.
+    
+    Example:
+        settings(make_test_state()) creates a page with class and priority dropdowns.
+    """
     classes = get_classes(state)
 
     # A deleted class may no longer be an available option.
@@ -291,7 +428,19 @@ def settings(state: State) -> Page:
 @route
 def update_filters(state: State, selected_class: str,
                    priority_filter: str) -> Page:
-    """Updates the class and priority filters based on the user selections."""
+    """Saves the selected filters and displays matching assignments.
+    
+    Parameters:
+        state: Stores assignments and selected filters.
+        selected_class: The class to show, or "All".
+        priority_filter: The priority to show, or "All".
+    
+    Returns:
+        A Page showing assignments with the updated filters.
+    
+    Example:
+        update_filters(state, "Math", "High") sets the filters to Math and High.
+    """
     # Save these choices in State so other pages can use them.
     state.selected_class = selected_class
     state.priority_filter = priority_filter
@@ -300,7 +449,17 @@ def update_filters(state: State, selected_class: str,
 
 
 def make_test_state() -> State:
-    """Creates example assignments to use when testing the website."""
+    """Creates sample assignments for testing the website.
+    
+    Parameters:
+        None.
+    
+    Returns:
+        A State with two assignments, one already completed.
+    
+    Example:
+        make_test_state() returns a State with Homework 1 and Essay and a completed count of 1.
+    """
     # One finished and one unfinished assignment for testing.
     return State([
         Assignment("Homework 1", "Math", "2026-12-01", "High", False),
@@ -400,5 +559,3 @@ set_site_information(
 
 
 start_server(State([], "All", "All", 0))
-
-
